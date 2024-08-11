@@ -1,6 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
+import {Link} from 'react-router-dom'
+import useLogin from '../../hooks/useLogin'
 
 const Login = () => {
+    const [userName,setUsername]=useState("")
+    const [password,setPassword]=useState("")
+
+    const {loading,login}=useLogin()
+
+    const handleSubmit = async(e)=>{
+        e.preventDefault()
+        await login(userName,password)
+    }
+
   return ( 
      <div className='flex flex-col items-center justify-center min-w-96 mx-auto'>
         <div className='w-full p-10 rounded-2xl shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
@@ -8,31 +20,38 @@ const Login = () => {
                 Login
                 <span className='text-blue-500'> ChatWave</span>
             </h1>
-            <form>
+            <form onSubmit = {handleSubmit}>
                 <div >
                     <label className='label p-2'>
                         <span className='text-base label-text text-white'>Username</span>
                     </label>
-                    <input type='text' placeholder='Enter Username' className='w-full input input-bordered h-10'/>
+                    <input type='text' placeholder='Enter Username' className='w-full input input-bordered h-10'
+                     value={userName}
+                      onChange={(e)=> setUsername(e.target.value)}/>
                 </div>
                 <div >
                     <label className='label'>
                         <span className='text-base label-text text-white'>Password</span>
                     </label>
-                    <input type='password' placeholder='Enter Password' className='w-full input input-bordered h-10'/>
+                    <input type='password' placeholder='Enter Password' className='w-full input input-bordered h-10'
+                     value={password}
+                     onChange={(e)=> setPassword(e.target.value)}/>
                 </div>
-                <a href='#' className='text-sm hover:underline hover:text-blue-600 mt-2 inline-block text-white'>
+                <Link to='/signup' className='text-sm hover:underline hover:text-blue-600 mt-2 inline-block text-white'>
                     {"Don't"} have an account?
-                </a>
+                </Link>
                 <div>
-                    <button className='btn btn-block text-white btn-sm mt-2 hover:bg-blue-600 hover:text-white bg-blue-500'>Login</button>
+                    <button className='btn btn-block text-white btn-sm mt-2 hover:bg-blue-600 hover:text-white bg-blue-500'
+                     disabled={loading}>
+                        {loading ? <span className='loading loading-spinner text-white'></span> : "Login"}
+                        </button>
                 </div>
             </form>
         </div>
     </div>
 
   )
-}
+} 
 
 export default Login
 

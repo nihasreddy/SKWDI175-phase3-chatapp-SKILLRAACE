@@ -31,12 +31,12 @@ const signup = async(req,res)=>{
             password:hashedPassword,
             gender:gender,
             profilePic:gender === 'male' ? boyProfilePic:girlProfilePic
-        })
+        });
 
         if(newUser){
+            await newUser.save()
             //Generate JWT token here
             generateTokenAndSetCookie(newUser._id,res)
-            await newUser.save()
 
             res.status(201).json({
                  _id:newUser._id,
@@ -89,4 +89,4 @@ const logout = (req,res)=>{
 }
 
 
-module.exports = {signup,login,logout}
+module.exports = {signup,login,logout} 
